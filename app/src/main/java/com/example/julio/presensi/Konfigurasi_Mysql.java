@@ -5,9 +5,9 @@ public class Konfigurasi_Mysql {
     public static final String url_register="http://dwh.ciptakarya.pu.go.id/tes/register.php";
     public static final String url_absen="http://dwh.ciptakarya.pu.go.id/tes/absen.php";
 
-//    public static final String URL_LOGIN="http://dwh.ciptakarya.pu.go.id/tes/get.php";
-//    public static final String url_register="http://dwh.ciptakarya.pu.go.id/tes/register.php";
-//    public static final String url_absen="http://dwh.ciptakarya.pu.go.id/tes/absen.php";
+//    public static final String URL_LOGIN="http://192.168.1.104/presensi/get.php";
+//    public static final String url_register="http://192.168.1.104/presensi/register.php";
+//    public static final String url_absen="http://192.168.1.104/presensi/absen.php";
 
     //Dibawah ini merupakan Kunci yang akan digunakan untuk mengirim permintaan ke Skrip PHP
     public static final String tag_npm= "npm";

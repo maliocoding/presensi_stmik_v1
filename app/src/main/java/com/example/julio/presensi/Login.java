@@ -54,25 +54,7 @@ public class Login extends AppCompatActivity {
             return;
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
-        switch (requestCode) {
-            case 101:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, 101);
-                        return;
-                    }
-                    imei = telephonyManager.getDeviceId();
 
-                } else {
-                    imei = telephonyManager.getDeviceId();
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
 
     public void Signin(View view) {
 
@@ -85,7 +67,7 @@ public class Login extends AppCompatActivity {
             ProgressDialog loading;
             final String isiNpm=npm.getText().toString();
             final String isiPass=password.getText().toString();
-//            String webservis= "http://localhost/presensi/get.php?imei="+imei+"&npm="+isiNpm+"&password="+isiPass+"&key=udin";
+
             String hasil;
             String status;
             String nama;
@@ -95,6 +77,18 @@ public class Login extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+                TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+                if (ActivityCompat.checkSelfPermission(Login.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    // public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                imei = tm.getDeviceId();
                 loading = ProgressDialog.show(Login.this,"Proses...","Tunggu...",false,false);
             }
 
@@ -113,35 +107,32 @@ public class Login extends AppCompatActivity {
                         status = jo.getString("status");
                         nama=jo.getString("nama");
                     }catch (JSONException e){
-                        e.printStackTrace();
+                       e.printStackTrace();
+                        Toast.makeText(Login.this,"aduh error", Toast.LENGTH_LONG).show();
                     }
                     loading.dismiss();
 //
                     if (status!=null && status.equals("sukses")){
-                        Toast.makeText(Login.this, "Ok coy", Toast.LENGTH_SHORT).show();
+
 
                     Cursor hasil = myDB.getAllData();
-                    if(hasil.getCount() == 0) {
-                        // show message
-                       // Toast.makeText(Login.this,"kosong pak eko",Toast.LENGTH_LONG).show();
-                        //insert ke sql lite
-                        boolean isInserted = myDB.insertData(isiNpm,nama,"1" );
-                        if(isInserted == true) {
-                          //  Toast.makeText(Login.this, "masuk pak eko", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(Login.this, Dashboard.class);
-                            finish();
-                            startActivity(intent);
+                        if(hasil.getCount() == 0) {
+                            // show message
+                           // Toast.makeText(Login.this,"kosong pak eko",Toast.LENGTH_LONG).show();
+                            //insert ke sql lite
+                            boolean isInserted = myDB.insertData(isiNpm,nama,"1" );
+                            if(isInserted == true) {
+                              //  Toast.makeText(Login.this, "masuk pak eko", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(Login.this, Dashboard.class);
+                                finish();
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(Login.this, "gagal dong", Toast.LENGTH_LONG).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(Login.this, "gagal dong", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-
-
-
                     }else{
-                        Toast.makeText(Login.this, "status null", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this, status, Toast.LENGTH_LONG).show();
 
 
                     }

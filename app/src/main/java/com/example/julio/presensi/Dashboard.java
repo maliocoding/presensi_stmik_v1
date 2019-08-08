@@ -1,12 +1,16 @@
 package com.example.julio.presensi;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
@@ -26,19 +30,13 @@ import java.util.HashMap;
 
 public class Dashboard extends AppCompatActivity {
     IntentIntegrator intentIntegrator;
-    DBHelper myDB;
+
     String ruangan;
     String matkul;
     String tanggal;
     String hasil;
     String nama;
     String npm;
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +69,7 @@ public class Dashboard extends AppCompatActivity {
         TextView tnama=findViewById(R.id.edNama);
         tnama.setText(nama);
     }
+
 
     boolean doubleBackToExitPressedOnce = false;
 
@@ -156,6 +155,41 @@ public class Dashboard extends AppCompatActivity {
         intentIntegrator.initiateScan();
     }
 
+    public void Logout(View view) {
+        // inisialisasi DBHelper
+        final DBHelper myDB;
+        myDB=new DBHelper(this);
+
+        //Alert konfirmasi
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Alert");
+        builder.setMessage("Anda yakin akan logout?");
+        builder.setPositiveButton("Ya",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //hapus db di android lalu balik ke mainactivity
+                        int hasil=myDB.deleteAllData();
+                        if(hasil>0){
+                            Toast.makeText(Dashboard.this, "Anda Berhasil Logout", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(Dashboard.this, MainActivity.class);
+                            finish();
+                            startActivity(intent);
+                        }
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
 
 
 
@@ -233,7 +267,6 @@ public class Dashboard extends AppCompatActivity {
             HashMap<String,String> params = new HashMap<>();
             params.put("npm",npm);
             params.put("nama",nama);
-            params.put("ruangan",ruangan);
             params.put("key","udin");
             params.put("ruangan",ruangan);
             params.put("matkul",matkul);

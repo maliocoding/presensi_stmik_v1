@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity  {
 
         }else{
 
+
             try {
 //               int stat= hasil.getInt( hasil.getColumnIndex("status"));
                 SQLiteDatabase db = myDB.getReadableDatabase();
