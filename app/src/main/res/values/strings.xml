@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">presensi</string>
+
+    <string name="create_account">
+        <font color="#00ff00">text</font>
+    </string>
+    <string name="npm">npm</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+
+    <string name="register">Register</string>
+    <string name="back_to_login">Back to Login</string>
+    <string-array name="jurusan">
+        <item>Teknik Informatika S1</item>
+        <item>Sistem Infromasi S1</item>
+        <item>Manajemen Informatika</item>
+        <item>Teknik Komputer</item>
+        <item>Teknik Komputer D3</item>
+        <item>Sistem Informasi D3</item>
+
+
+    </string-array>
+</resources>
